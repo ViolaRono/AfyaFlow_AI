@@ -1,2 +1,2 @@
 # MamaCare_AI
-Capstone Project: Maternal &amp; Child Health Care Flow and Retention Prediction using Machine Learning
+Capstone Project: A machine learning project by Team Maternix for maternal and child health retention risk prediction, clinic attendance forecasting, and care-flow optimization.
