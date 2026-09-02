@@ -1,0 +1,3 @@
+- Filtered out exact midnight (00:00:00) placeholder registration timestamps to prevent distribution bias in hourly patient flow analysis.
+- Dropped redundant duplicate rows from the working dataset.
+- Removed temporary helper columns (temp_datetime, hour, day_of_week, is_exact_midnight) to clean up the final schema.
