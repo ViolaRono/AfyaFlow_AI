@@ -3,6 +3,10 @@
 AfyaFlow predicts how many patients will show up at each hospital department, hour by hour, so that staff and rooms can be put where the patients will be.
 Moringa School, Capstone. Group 1, Queue Busters.
 
+### Project Link
+
+- [Dataset - Google Drive](https://drive.google.com/drive/folders/143niKLK5dqg21RFiepCYGbVqfNiuOHP9?usp=sharing)
+
 ### The problem
 Kijabe Hospital plans its outpatient departments around daily averages. But patients do not arrive in an even spread through the day. They come in a big wave in the morning.
 We looked at 306,306 patient registrations. In the busiest single hour, one department received 59 patients. A typical department-hour gets about two. So a nurse rostered to the average is swamped at 9am and has nothing to do by 3pm.
@@ -36,15 +40,13 @@ Patient registrations
   → train on the older 80%, test on the newest 20%
   → compare against the simple rule
 ```
-#### Three choices that matter:
+#### The choices that matter:
 * We tested on the newest data, not a random sample. If you pick test rows at random, the model
 gets to see the future while it learns. 
 * We split by date instead, training on the earlier period and testing on the later one.
 We filled in the empty hours. The hospital system only records a row when someone actually
 arrives. So we added the missing hours back with a count of zero. Without this the model would never
 learn what a quiet afternoon looks like.
-* We never let the model peek. Columns like "how many patients came last hour" are shifted back in
-time before the model sees them, so it cannot accidentally read the answer it is trying to predict.
 
 What the model looks at:
 
@@ -54,7 +56,6 @@ What the model looks at:
 | Daily | day of week, weekend or not, month, yesterday's count, same day last week, average of last 7 days, department |
 | Weekly | month, quarter, year, last week, 2 weeks ago, 4 weeks ago, average of last 4 weeks, department |
 
-## Why the hourly numbers look so small
 
 An average error of 0.24 patients looks too good to be true. It is small because most department-hours have nobody in them at all, and those easy zeros pull the average down.
 
@@ -89,7 +90,7 @@ AfyaFlow_AI/
 └── README.md
 ```
 
-*What this project cannot do*
+*Limitations*
 
 * We were not given waiting times, staffing levels or bed availability. So we work out congestion
 from how many people arrive, not from how long they actually waited.
@@ -102,4 +103,4 @@ Python, pandas, LightGBM, Prophet, scikit-learn, matplotlib, seaborn, Streamlit
 
 #### *The team*
 
-Silvia, Peter, Cate, Leon, Alisha, Viola
+Silvia Odhiambo, Peter Magondu, Catherine Kagwiria, Leon Oswago, Alisha Saburali, Viola Rono
