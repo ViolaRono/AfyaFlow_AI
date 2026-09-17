@@ -1,0 +1,2759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AfyaFlow</title>
+
+    <!-- ======================================================
+         FONTS
+    ======================================================= -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- ======================================================
+         PLOTLY
+    ======================================================= -->
+
+    <script
+        src="https://cdn.plot.ly/plotly-2.35.2.min.js"
+    ></script>
+
+
+    <!-- ======================================================
+         STYLES
+    ======================================================= -->
+
+    <style>
+
+        /* ==================================================
+           AFYAFLOW COLOR PALETTE
+        ================================================== */
+
+        :root {
+            --background: #F5F6F4;
+            --cards: #FAFBFA;
+            --primary: #4D9296;
+            --secondary: #78A9AA;
+            --light-accent: #DCEAEA;
+            --headings: #345E61;
+            --text: #303A3A;
+            --muted: #6F7B7B;
+
+            --low-bg: #D9F5E8;
+            --low-text: #16805A;
+
+            --moderate-bg: #FFF1C7;
+            --moderate-text: #8A6500;
+
+            --high-bg: #FFE0B8;
+            --high-text: #9A5700;
+
+            --critical-bg: #FFD4D4;
+            --critical-text: #B42318;
+
+            --closed-bg: #E5E7EB;
+            --closed-text: #59636E;
+        }
+
+
+        /* ==================================================
+           RESET
+        ================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: "Inter", sans-serif;
+        }
+
+
+        /* ==================================================
+           MAIN CONTAINER
+        ================================================== */
+
+        .container {
+            width: 96%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 18px 0 40px;
+        }
+
+
+        /* ==================================================
+           HEADER
+        ================================================== */
+
+        .header {
+            background: var(--cards);
+            border: 1px solid var(--light-accent);
+            border-radius: 14px;
+            padding: 18px 24px;
+            margin-bottom: 18px;
+
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .logo-placeholder {
+            width: 58px;
+            height: 58px;
+            border-radius: 12px;
+            background: var(--light-accent);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--primary);
+            font-family: "Manrope", sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .brand-title {
+            margin: 0;
+            font-family: "Manrope", sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--headings);
+        }
+
+        .brand-subtitle {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+
+        /* ==================================================
+           RESOLUTION BUTTONS
+        ================================================== */
+
+        .resolution-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .resolution-btn {
+            border: none;
+            border-radius: 6px;
+
+            padding: 8px 16px;
+
+            background: #E2E4E4;
+            color: var(--text);
+
+            font-family: "Inter", sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease;
+        }
+
+        .resolution-btn:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .resolution-btn.active {
+            background: #123E31;
+            color: white;
+        }
+
+
+        /* ==================================================
+           CONTROL PANEL
+        ================================================== */
+
+        .controls {
+            background: var(--cards);
+            border: 1px solid var(--light-accent);
+            border-radius: 12px;
+
+            padding: 18px;
+
+            display: grid;
+            grid-template-columns:
+                minmax(180px, 1.5fr)
+                minmax(120px, 0.8fr)
+                minmax(120px, 0.8fr)
+                auto;
+
+            gap: 14px;
+            align-items: end;
+
+            margin-bottom: 14px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .control-label {
+            color: var(--headings);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+
+            height: 38px;
+
+            border: 1px solid #C8D8D8;
+            border-radius: 7px;
+
+            background: white;
+            color: var(--text);
+
+            padding: 0 10px;
+
+            font-family: "Inter", sans-serif;
+            font-size: 13px;
+        }
+
+        select:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--light-accent);
+        }
+
+        .scenario-button {
+            height: 38px;
+
+            border: none;
+            border-radius: 7px;
+
+            padding: 0 17px;
+
+            background: #123E31;
+            color: white;
+
+            font-family: "Inter", sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .scenario-button:hover {
+            background: var(--headings);
+        }
+
+
+        /* ==================================================
+           STATUS MESSAGE
+        ================================================== */
+
+        .message {
+            background: var(--cards);
+            border: 1px solid var(--light-accent);
+            border-radius: 10px;
+
+            padding: 13px 16px;
+
+            margin-bottom: 14px;
+
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+
+        /* ==================================================
+           KPI GRID
+        ================================================== */
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 12px;
+
+            margin-bottom: 14px;
+        }
+
+        .kpi-card {
+            background: var(--cards);
+
+            border: 1px solid var(--light-accent);
+            border-radius: 10px;
+
+            padding: 15px;
+            min-height: 82px;
+        }
+
+        .kpi-label {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 500;
+
+            margin-bottom: 4px;
+        }
+
+        .kpi-value {
+            color: var(--headings);
+
+            font-family: "Inter", sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+
+            line-height: 1.2;
+        }
+
+
+        /* ==================================================
+           PANELS
+        ================================================== */
+
+        .panel {
+            background: var(--cards);
+            border: 1px solid var(--light-accent);
+            border-radius: 12px;
+
+            padding: 18px;
+
+            margin-bottom: 14px;
+        }
+
+        .panel-title {
+            margin: 0 0 8px;
+
+            color: var(--headings);
+
+            font-family: "Manrope", sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .panel-subtitle {
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 12px;
+        }
+
+
+        /* ==================================================
+           STAFFING SCENARIO
+        ================================================== */
+
+        .scenario-panel {
+            border-left: 4px solid var(--primary);
+        }
+
+        .scenario-text {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .scenario-text strong {
+            color: var(--headings);
+        }
+
+
+        /* ==================================================
+           CHART
+        ================================================== */
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 390px;
+        }
+
+        #demandCapacityChart {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+
+        /* ==================================================
+           TABLE
+        ================================================== */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+
+            border: 1px solid var(--light-accent);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            background: var(--cards);
+
+            font-size: 11px;
+        }
+
+        th {
+            background: #F0F3F2;
+
+            color: var(--headings);
+
+            text-align: left;
+
+            font-weight: 600;
+
+            padding: 10px 9px;
+
+            white-space: nowrap;
+        }
+
+        td {
+            color: var(--text);
+
+            padding: 9px;
+
+            border-top: 1px solid #E6ECEB;
+
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: #F4F8F7;
+        }
+
+
+        /* ==================================================
+           STATUS BADGES
+        ================================================== */
+
+        .status {
+            display: inline-block;
+
+            padding: 4px 9px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .status-low {
+            background: var(--low-bg);
+            color: var(--low-text);
+        }
+
+        .status-moderate {
+            background: var(--moderate-bg);
+            color: var(--moderate-text);
+        }
+
+        .status-high {
+            background: var(--high-bg);
+            color: var(--high-text);
+        }
+
+        .status-critical,
+        .status-overloaded {
+            background: var(--critical-bg);
+            color: var(--critical-text);
+        }
+
+        .status-closed {
+            background: var(--closed-bg);
+            color: var(--closed-text);
+        }
+
+
+        /* ==================================================
+           RESOURCE CONTEXT
+        ================================================== */
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 12px;
+        }
+
+
+        /* ==================================================
+           FOOTER
+        ================================================== */
+
+        .footer-note {
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.5;
+            margin-top: 18px;
+        }
+
+
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media (max-width: 900px) {
+
+            .controls {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .kpi-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94%;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .brand-title {
+                font-size: 24px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resolution-bar {
+                flex-wrap: wrap;
+            }
+
+            .chart-wrapper {
+                height: 300px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- ====================================================
+         HEADER
+    ===================================================== -->
+
+    <header class="header">
+
+        <div class="logo-placeholder">
+            +
+        </div>
+
+        <div>
+            <h1 class="brand-title">
+                AfyaFlow
+            </h1>
+
+            <div class="brand-subtitle">
+                Hospital Demand Forecasting & Resource Allocation
+            </div>
+        </div>
+
+    </header>
+
+
+    <!-- ====================================================
+         FORECAST RESOLUTION BUTTONS
+    ===================================================== -->
+
+    <div class="resolution-bar">
+
+        <button
+            class="resolution-btn active"
+            data-level="Daily"
+            onclick="changeLevel('Daily')"
+        >
+            Daily
+        </button>
+
+        <button
+            class="resolution-btn"
+            data-level="Hourly"
+            onclick="changeLevel('Hourly')"
+        >
+            Hourly
+        </button>
+
+        <button
+            class="resolution-btn"
+            data-level="Weekly"
+            onclick="changeLevel('Weekly')"
+        >
+            Weekly
+        </button>
+
+    </div>
+
+
+    <!-- ====================================================
+         CONTROLS
+    ===================================================== -->
+
+    <section class="controls">
+
+        <div class="control-group">
+
+            <label
+                class="control-label"
+                for="departmentSelect"
+            >
+                Department
+            </label>
+
+            <select id="departmentSelect">
+            </select>
+
+        </div>
+
+
+        <div class="control-group">
+
+            <label
+                class="control-label"
+                for="scenarioStaff"
+            >
+                Scenario Staff
+            </label>
+
+            <input
+                id="scenarioStaff"
+                type="number"
+                min="1"
+                max="100"
+                value="6"
+            >
+
+        </div>
+
+
+        <div class="control-group">
+
+            <label
+                class="control-label"
+                for="scenarioRooms"
+            >
+                Scenario Rooms
+            </label>
+
+            <input
+                id="scenarioRooms"
+                type="number"
+                min="1"
+                max="100"
+                value="6"
+            >
+
+        </div>
+
+
+        <button
+            class="scenario-button"
+            onclick="runStaffingScenario()"
+        >
+            Run Staffing Scenario
+        </button>
+
+    </section>
+
+
+    <!-- ====================================================
+         MESSAGE
+    ===================================================== -->
+
+    <div
+        id="statusMessage"
+        class="message"
+    >
+        Data loaded successfully.
+    </div>
+
+
+    <!-- ====================================================
+         KPI CARDS
+    ===================================================== -->
+
+    <section class="kpi-grid">
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Forecast Demand
+            </div>
+
+            <div
+                id="forecastDemand"
+                class="kpi-value"
+            >
+                —
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Capacity
+            </div>
+
+            <div
+                id="capacity"
+                class="kpi-value"
+            >
+                —
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Utilization
+            </div>
+
+            <div
+                id="utilization"
+                class="kpi-value"
+            >
+                —
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Congestion
+            </div>
+
+            <div id="congestion">
+                —
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         STAFFING SCENARIO
+    ===================================================== -->
+
+    <section
+        id="scenarioPanel"
+        class="panel scenario-panel"
+    >
+
+        <h2 class="panel-title">
+            Staffing Scenario
+        </h2>
+
+        <div
+            id="scenarioText"
+            class="scenario-text"
+        >
+            Set staff and room availability, then run a scenario.
+        </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         DEMAND VS CAPACITY
+    ===================================================== -->
+
+    <section class="panel">
+
+        <h2
+            id="chartTitle"
+            class="panel-title"
+        >
+            Demand vs Capacity
+        </h2>
+
+        <div class="chart-wrapper">
+
+            <div id="demandCapacityChart" aria-label="Interactive demand versus capacity chart"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         SIMULATION SUMMARY
+    ===================================================== -->
+
+    <section class="panel">
+
+        <h2 class="panel-title">
+            Simulation Summary
+        </h2>
+
+        <div class="kpi-grid">
+
+            <div class="kpi-card">
+
+                <div class="kpi-label">
+                    Patients Served
+                </div>
+
+                <div
+                    id="patientsServed"
+                    class="kpi-value"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-label">
+                    Patients Remaining
+                </div>
+
+                <div
+                    id="patientsRemaining"
+                    class="kpi-value"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-label">
+                    Average Wait
+                </div>
+
+                <div
+                    id="averageWait"
+                    class="kpi-value"
+                >
+                    N/A
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-label">
+                    Maximum Wait
+                </div>
+
+                <div
+                    id="maximumWait"
+                    class="kpi-value"
+                >
+                    N/A
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         DEPARTMENT OVERVIEW
+    ===================================================== -->
+
+    <section
+        id="departmentOverviewPanel"
+        class="panel"
+    >
+
+        <h2 class="panel-title">
+            Department Capacity Overview
+        </h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Department</th>
+                        <th>Forecast Demand</th>
+                        <th>Capacity</th>
+                        <th>Patients Served</th>
+                        <th>Patients Remaining</th>
+                        <th>Utilization (%)</th>
+                        <th>Congestion</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="departmentTableBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         SIMULATION DETAILS
+    ===================================================== -->
+
+    <section class="panel">
+
+        <h2 class="panel-title">
+            Simulation Details
+        </h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Period</th>
+                        <th>Demand</th>
+                        <th>Capacity</th>
+                        <th>Patients Served</th>
+                        <th>Patients Remaining</th>
+                        <th>Average Wait (min)</th>
+                        <th>Utilization (%)</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="simulationTableBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         HOSPITAL RESOURCE CONTEXT
+    ===================================================== -->
+
+    <section class="panel">
+
+        <h2 class="panel-title">
+            Hospital Resource Context
+        </h2>
+
+        <div class="resource-grid">
+
+            <div class="kpi-card">
+
+                <div class="kpi-label">
+                    Hospital Beds
+                </div>
+
+                <div class="kpi-value">
+                    363
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-label">
+                    Operating Rooms
+                </div>
+
+                <div class="kpi-value">
+                    15
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-label">
+                    Consultants
+                </div>
+
+                <div class="kpi-value">
+                    70
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<!-- ========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /* ======================================================
+       API CONFIGURATION
+    ====================================================== */
+
+    const API_BASE = (() => {
+
+        // If index.html is served by FastAPI on port 8000, use
+        // the same origin. If it is opened through another local
+        // dev server (or directly as a file), call the FastAPI
+        // backend explicitly.
+        if (
+            window.location.protocol !== "file:" &&
+            window.location.port === "8000"
+        ) {
+            return window.location.origin;
+        }
+
+        return "http://127.0.0.1:8000";
+
+    })();
+
+
+    /* ======================================================
+       APPLICATION STATE
+    ====================================================== */
+
+    let currentLevel = "Daily";
+
+    let currentDepartment = null;
+
+    let currentView = "Department";
+
+    let currentSimulation = [];
+
+    let currentScenario = [];
+
+    let chart = null;
+
+
+    /* ======================================================
+       DATASET ENDPOINTS
+    ====================================================== */
+
+    const endpoints = {
+
+        Hourly: {
+            forecast: "/forecast/hourly",
+            simulation: "/simulation/hourly"
+        },
+
+        Daily: {
+            forecast: "/forecast/daily",
+            simulation: "/simulation/daily"
+        },
+
+        Weekly: {
+            forecast: "/forecast/weekly",
+            simulation: "/simulation/weekly"
+        }
+
+    };
+
+
+    /* ======================================================
+       GENERIC FETCH
+    ====================================================== */
+
+    async function fetchJSON(url) {
+
+        const requestUrl = API_BASE + url;
+
+        let response;
+
+        try {
+            response = await fetch(requestUrl);
+        } catch (error) {
+            throw new Error(
+                `Could not connect to AfyaFlow API at ${requestUrl}. ` +
+                `Make sure FastAPI is running on http://127.0.0.1:8000.`
+            );
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                `API request failed (${response.status}) at ${requestUrl}`
+            );
+        }
+
+        return await response.json();
+
+    }
+
+
+    /* ======================================================
+       NORMALIZE API DATA
+    ====================================================== */
+
+    function normalizeRows(data) {
+
+        if (Array.isArray(data)) {
+            return data;
+        }
+
+        if (data && Array.isArray(data.data)) {
+            return data.data;
+        }
+
+        if (data && Array.isArray(data.results)) {
+            return data.results;
+        }
+
+        return [];
+
+    }
+
+
+    /* ======================================================
+       NUMERIC HELPER
+    ====================================================== */
+
+    function number(value, fallback = 0) {
+
+        const n = Number(value);
+
+        return Number.isFinite(n)
+            ? n
+            : fallback;
+
+    }
+
+
+    /* ======================================================
+       DEPARTMENT NAME
+    ====================================================== */
+
+    function getDepartment(row) {
+
+        return (
+            row.department ??
+            row.QueuedTo ??
+            ""
+        ).toString().trim();
+
+    }
+
+
+    /* ======================================================
+       DEMAND
+    ====================================================== */
+
+    function getDemand(row) {
+
+        return number(
+            row.forecast_demand ??
+            row.demand ??
+            row.predicted_demand ??
+            row.ensemble_prediction
+        );
+
+    }
+
+
+    /* ======================================================
+       CAPACITY
+    ====================================================== */
+
+    function getCapacity(row) {
+
+        return number(
+            row.capacity ??
+            row.daily_capacity ??
+            row.weekly_capacity
+        );
+
+    }
+
+
+    /* ======================================================
+       PATIENTS SERVED
+    ====================================================== */
+
+    function getPatientsServed(row) {
+
+        return number(
+            row.patients_served
+        );
+
+    }
+
+
+    /* ======================================================
+       PATIENTS REMAINING
+    ====================================================== */
+
+    function getPatientsRemaining(row) {
+
+        return number(
+            row.patients_remaining
+        );
+
+    }
+
+
+    /* ======================================================
+       UTILIZATION
+    ====================================================== */
+
+    function getUtilization(row) {
+
+        if (
+            row.utilization_pct !== undefined &&
+            row.utilization_pct !== null
+        ) {
+
+            return number(
+                row.utilization_pct
+            );
+
+        }
+
+        const demand = getDemand(row);
+        const capacity = getCapacity(row);
+
+        if (capacity <= 0) {
+            return demand > 0 ? 100 : 0;
+        }
+
+        return (
+            demand / capacity
+        ) * 100;
+
+    }
+
+
+    /* ======================================================
+       STATUS
+    ====================================================== */
+
+    function getStatus(row) {
+
+        return (
+            row.congestion_status ??
+            row.status ??
+            "Low"
+        ).toString();
+
+    }
+
+
+    /* ======================================================
+       WAIT
+    ====================================================== */
+
+    function getAverageWait(row) {
+
+        const value =
+            row.average_wait_minutes;
+
+        if (
+            value === undefined ||
+            value === null ||
+            value === ""
+        ) {
+
+            return null;
+
+        }
+
+        const n = Number(value);
+
+        return Number.isFinite(n)
+            ? n
+            : null;
+
+    }
+
+
+    function getMaximumWait(row) {
+
+        const value =
+            row.maximum_wait_minutes;
+
+        if (
+            value === undefined ||
+            value === null ||
+            value === ""
+        ) {
+
+            return null;
+
+        }
+
+        const n = Number(value);
+
+        return Number.isFinite(n)
+            ? n
+            : null;
+
+    }
+
+
+    /* ======================================================
+       PERIOD
+    ====================================================== */
+
+    function getPeriod(row) {
+
+        if (currentLevel === "Hourly") {
+
+            const rawDate = row.date ?? row.period;
+            const rawHour = Number(row.hour);
+
+            if (rawDate === undefined || rawDate === null) {
+                return new Date(NaN);
+            }
+
+            const text = String(rawDate).trim();
+
+            // The hourly CSV stores `date` as YYYY-MM-DD and `hour`
+            // separately. Some generated datasets instead store the
+            // hour inside `date`. Support both forms.
+            if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+                const parts = text.split("-").map(Number);
+                const hour = Number.isFinite(rawHour) ? rawHour : 0;
+                return new Date(parts[0], parts[1] - 1, parts[2], hour, 0, 0);
+            }
+
+            const parsed = new Date(text);
+
+            if (!Number.isNaN(parsed.getTime())) {
+                return parsed;
+            }
+
+            return new Date(NaN);
+        }
+
+        if (currentLevel === "Weekly") {
+            return new Date(row.period ?? row.week);
+        }
+
+        return new Date(row.period ?? row.date);
+
+    }
+
+
+    /* ======================================================
+       PERIOD DISPLAY
+    ====================================================== */
+
+    function formatPeriod(row) {
+
+        const date = getPeriod(row);
+
+        if (Number.isNaN(date.getTime())) {
+
+            return "—";
+
+        }
+
+
+        /* ----------------------------------------------
+           HOURLY
+        ---------------------------------------------- */
+
+        if (currentLevel === "Hourly") {
+
+            return date.toLocaleString(
+                "en-KE",
+                {
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false
+                }
+            );
+
+        }
+
+
+        /* ----------------------------------------------
+           DAILY
+        ---------------------------------------------- */
+
+        if (currentLevel === "Daily") {
+
+            return date.toLocaleDateString(
+                "en-KE",
+                {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric"
+                }
+            );
+
+        }
+
+
+        /* ----------------------------------------------
+           WEEKLY
+        ---------------------------------------------- */
+
+        return date.toLocaleDateString(
+            "en-KE",
+            {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            }
+        );
+
+    }
+
+
+    /* ======================================================
+       STATUS HTML
+    ====================================================== */
+
+    function statusHTML(status) {
+
+        const normalized =
+            status.toLowerCase();
+
+        let className =
+            "status-low";
+
+        if (
+            normalized.includes("critical") ||
+            normalized.includes("overloaded")
+        ) {
+
+            className =
+                "status-critical";
+
+        } else if (
+            normalized.includes("high")
+        ) {
+
+            className =
+                "status-high";
+
+        } else if (
+            normalized.includes("moderate")
+        ) {
+
+            className =
+                "status-moderate";
+
+        } else if (
+            normalized.includes("closed")
+        ) {
+
+            className =
+                "status-closed";
+
+        }
+
+        return `
+            <span class="status ${className}">
+                ${status}
+            </span>
+        `;
+
+    }
+
+
+    /* ======================================================
+       CHANGE LEVEL
+    ====================================================== */
+
+    async function changeLevel(level) {
+
+        currentLevel = level;
+
+        document
+            .querySelectorAll(".resolution-btn")
+            .forEach(button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.level === level
+                );
+
+            });
+
+
+        try {
+
+            await loadData();
+
+        } catch (error) {
+
+            showMessage(
+                "Unable to load " +
+                level.toLowerCase() +
+                " data.",
+                true
+            );
+
+            console.error(error);
+
+        }
+
+    }
+
+
+    /* ======================================================
+       LOAD DATA
+    ====================================================== */
+
+    async function loadData() {
+
+        showMessage(
+            `Loading ${currentLevel.toLowerCase()} data...`
+        );
+
+
+        const simulationData =
+            await fetchJSON(
+                endpoints[currentLevel].simulation
+            );
+
+
+        currentSimulation =
+            normalizeRows(simulationData);
+
+        // A level change invalidates the previous scenario result.
+        currentScenario = [];
+
+
+        if (!currentSimulation.length) {
+
+            throw new Error(
+                "Simulation dataset is empty."
+            );
+
+        }
+
+
+        /* ----------------------------------------------
+           CLEAN DEPARTMENT NAMES
+        ---------------------------------------------- */
+
+        currentSimulation =
+            currentSimulation.map(row => {
+
+                return {
+                    ...row,
+                    department:
+                        getDepartment(row)
+                };
+
+            });
+
+
+        populateDepartments();
+
+        updateDashboard();
+
+        showMessage(
+            "Data loaded successfully."
+        );
+
+    }
+
+
+    /* ======================================================
+       POPULATE DEPARTMENTS
+    ====================================================== */
+
+    function populateDepartments() {
+
+        const select =
+            document.getElementById("departmentSelect");
+
+        const departments =
+            [...new Set(
+                currentSimulation
+                    .map(getDepartment)
+                    .filter(Boolean)
+            )]
+            .sort();
+
+        const previous = currentDepartment;
+
+        select.innerHTML = "";
+
+        const hospitalOption = document.createElement("option");
+        hospitalOption.value = "__HOSPITAL_WIDE__";
+        hospitalOption.textContent = "Hospital-wide";
+        select.appendChild(hospitalOption);
+
+        departments.forEach(department => {
+            const option = document.createElement("option");
+            option.value = department;
+            option.textContent = department;
+            select.appendChild(option);
+        });
+
+        if (previous === "__HOSPITAL_WIDE__") {
+            select.value = "__HOSPITAL_WIDE__";
+        } else if (previous && departments.includes(previous)) {
+            select.value = previous;
+        } else {
+            select.value = departments[0] ?? "__HOSPITAL_WIDE__";
+        }
+
+        currentDepartment = select.value;
+        currentView = currentDepartment === "__HOSPITAL_WIDE__"
+            ? "Hospital-wide"
+            : "Department";
+
+        select.onchange = function () {
+            currentDepartment = this.value;
+            currentView = this.value === "__HOSPITAL_WIDE__"
+                ? "Hospital-wide"
+                : "Department";
+            currentScenario = [];
+            updateDashboard();
+        };
+
+    }
+
+
+    /* ======================================================
+       GET DEPARTMENT DATA
+    ====================================================== */
+
+    function getDepartmentData() {
+
+        return currentSimulation
+            .filter(
+                row =>
+                    getDepartment(row) ===
+                    currentDepartment
+            )
+            .sort(
+                (a, b) =>
+                    getPeriod(a) -
+                    getPeriod(b)
+            );
+
+    }
+
+
+    /* ======================================================
+       HOSPITAL-WIDE DATA
+    ====================================================== */
+
+    function getHospitalData() {
+
+        const grouped = new Map();
+
+
+        currentSimulation.forEach(row => {
+
+            const period =
+                getPeriod(row);
+
+
+            if (
+                Number.isNaN(
+                    period.getTime()
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const key =
+                period.toISOString();
+
+
+            if (!grouped.has(key)) {
+
+                grouped.set(
+                    key,
+                    {
+                        period,
+                        demand: 0,
+                        capacity: 0,
+                        served: 0,
+                        remaining: 0,
+                        waits: [],
+                        maxWaits: [],
+                        statuses: []
+                    }
+                );
+
+            }
+
+
+            const item =
+                grouped.get(key);
+
+
+            item.demand +=
+                getDemand(row);
+
+
+            /*
+             * For hourly hospital-wide capacity,
+             * closed departments contribute zero capacity.
+             *
+             * For daily/weekly, the simulation capacity
+             * already represents the full operating horizon.
+             */
+
+            if (currentLevel === "Hourly") {
+
+                const operating =
+                    row.operating === true ||
+                    row.operating === "true" ||
+                    row.operating === 1 ||
+                    row.operating === "1";
+
+                if (operating) {
+
+                    item.capacity +=
+                        getCapacity(row);
+
+                }
+
+            } else {
+
+                item.capacity +=
+                    getCapacity(row);
+
+            }
+
+
+            item.served +=
+                getPatientsServed(row);
+
+
+            item.remaining +=
+                getPatientsRemaining(row);
+
+
+            const wait =
+                getAverageWait(row);
+
+            if (wait !== null) {
+
+                item.waits.push(wait);
+
+            }
+
+
+            const maxWait =
+                getMaximumWait(row);
+
+            if (maxWait !== null) {
+
+                item.maxWaits.push(maxWait);
+
+            }
+
+
+            item.statuses.push(
+                getStatus(row)
+            );
+
+        });
+
+
+        return [...grouped.values()]
+            .map(item => {
+
+                const utilization =
+                    item.capacity > 0
+                        ? (
+                            item.demand /
+                            item.capacity
+                        ) * 100
+                        : item.demand > 0
+                            ? 100
+                            : 0;
+
+
+                let status = "Low";
+
+                if (item.capacity <= 0) {
+                    status = item.demand > 0 ? "Critical" : "Closed";
+                } else if (item.remaining > 0 || utilization > 100) {
+                    status = "Overloaded";
+                } else if (utilization >= 85) {
+                    status = "High";
+                } else if (utilization >= 70) {
+                    status = "Moderate";
+                }
+
+
+                const averageWait =
+                    item.waits.length
+                        ? item.waits.reduce(
+                            (a, b) => a + b,
+                            0
+                        ) / item.waits.length
+                        : null;
+
+
+                const maximumWait =
+                    item.maxWaits.length
+                        ? Math.max(
+                            ...item.maxWaits
+                        )
+                        : null;
+
+
+                return {
+
+                    period:
+                        item.period,
+
+                    demand:
+                        item.demand,
+
+                    capacity:
+                        item.capacity,
+
+                    served:
+                        item.served,
+
+                    remaining:
+                        item.remaining,
+
+                    utilization,
+
+                    status,
+
+                    averageWait,
+
+                    maximumWait
+
+                };
+
+            })
+            .sort(
+                (a, b) =>
+                    a.period -
+                    b.period
+            );
+
+    }
+
+
+    function getScenarioPeriod(row) {
+
+        if (currentLevel === "Hourly") {
+            return new Date(row.period);
+        }
+
+        if (currentLevel === "Weekly") {
+            return new Date(row.period);
+        }
+
+        return new Date(row.period);
+    }
+
+
+    /* ======================================================
+       UPDATE DASHBOARD
+    ====================================================== */
+
+    function updateDashboard() {
+
+        const isHospitalWide =
+            currentView === "Hospital-wide";
+
+
+        let data;
+
+
+        if (currentScenario.length && !isHospitalWide) {
+
+            data = currentScenario.map(row => ({
+                ...row,
+                period: getScenarioPeriod(row),
+                demand: getDemand(row),
+                capacity: getCapacity(row),
+                served: getPatientsServed(row),
+                remaining: getPatientsRemaining(row),
+                utilization: getUtilization(row),
+                status: getStatus(row),
+                averageWait: getAverageWait(row),
+                maximumWait: getMaximumWait(row)
+            }));
+
+        } else if (isHospitalWide) {
+
+            data = getHospitalData();
+
+        } else {
+
+            data = getDepartmentData().map(row => ({
+                ...row,
+                period: getPeriod(row),
+                demand: getDemand(row),
+                capacity: getCapacity(row),
+                served: getPatientsServed(row),
+                remaining: getPatientsRemaining(row),
+                utilization: getUtilization(row),
+                status: getStatus(row),
+                averageWait: getAverageWait(row),
+                maximumWait: getMaximumWait(row)
+            }));
+
+        }
+
+
+        if (!data.length) {
+
+            return;
+
+        }
+
+
+        const latest =
+            data[data.length - 1];
+
+
+        /* ----------------------------------------------
+           KPI
+        ---------------------------------------------- */
+
+        document.getElementById(
+            "forecastDemand"
+        ).textContent =
+            `${latest.demand.toFixed(0)} patients`;
+
+
+        document.getElementById(
+            "capacity"
+        ).textContent =
+            latest.status === "Closed"
+                ? "—"
+                : `${latest.capacity.toFixed(0)} patients`;
+
+
+        document.getElementById(
+            "utilization"
+        ).textContent =
+            latest.status === "Closed"
+                ? "—"
+                : `${latest.utilization.toFixed(1)}%`;
+
+
+        document.getElementById(
+            "congestion"
+        ).innerHTML =
+            statusHTML(
+                latest.status
+            );
+
+
+        /* ----------------------------------------------
+           SUMMARY
+        ---------------------------------------------- */
+
+        document.getElementById(
+            "patientsServed"
+        ).textContent =
+            latest.status === "Closed"
+                ? "—"
+                : latest.served.toFixed(0);
+
+
+        document.getElementById(
+            "patientsRemaining"
+        ).textContent =
+            latest.remaining.toFixed(0);
+
+
+        document.getElementById(
+            "averageWait"
+        ).textContent =
+            latest.averageWait !== null
+                ? `${latest.averageWait.toFixed(1)} min`
+                : "N/A";
+
+
+        document.getElementById(
+            "maximumWait"
+        ).textContent =
+            latest.maximumWait !== null
+                ? `${latest.maximumWait.toFixed(0)} min`
+                : "N/A";
+
+
+        /* ----------------------------------------------
+           TITLE
+        ---------------------------------------------- */
+
+        document.getElementById(
+            "chartTitle"
+        ).textContent =
+            isHospitalWide
+                ? "Hospital-wide Demand vs Capacity"
+                : `${currentDepartment} — Demand vs Capacity`;
+
+
+        /* ----------------------------------------------
+           CHART
+        ---------------------------------------------- */
+
+        updateChart(data);
+
+
+        /* ----------------------------------------------
+           TABLES
+        ---------------------------------------------- */
+
+        if (isHospitalWide) {
+
+            displayDepartmentOverview();
+
+            document
+                .getElementById(
+                    "departmentOverviewPanel"
+                )
+                .style.display =
+                    "block";
+
+        } else {
+
+            document
+                .getElementById(
+                    "departmentOverviewPanel"
+                )
+                .style.display =
+                    "none";
+
+        }
+
+
+        displaySimulationTable(data);
+
+        if (currentScenario.length && !isHospitalWide) {
+            const scenarioLatest = data[data.length - 1];
+            const staff = Number(document.getElementById("scenarioStaff").value);
+            const rooms = Number(document.getElementById("scenarioRooms").value);
+            document.getElementById("scenarioText").innerHTML = `
+                <strong>Scenario:</strong> ${staff} staff, ${rooms} rooms
+                &nbsp;|&nbsp;
+                <strong>Latest capacity:</strong> ${number(scenarioLatest.capacity).toFixed(0)}
+                &nbsp;|&nbsp;
+                <strong>Utilization:</strong> ${number(scenarioLatest.utilization).toFixed(1)}%
+                &nbsp;|&nbsp;
+                <strong>Patients remaining:</strong> ${number(scenarioLatest.remaining).toFixed(0)}
+                &nbsp;|&nbsp;
+                <strong>Status:</strong> ${statusHTML(scenarioLatest.status)}
+            `;
+        }
+
+    }
+
+
+    /* ======================================================
+       INTERACTIVE CHART
+    ====================================================== */
+
+    function updateChart(data) {
+
+        const chartElement =
+            document.getElementById("demandCapacityChart");
+
+        if (!chartElement || typeof Plotly === "undefined") {
+            return;
+        }
+
+        if (!data || !data.length) {
+            Plotly.purge(chartElement);
+            chart = null;
+            return;
+        }
+
+        const rows = [...data].sort(
+            (a, b) => new Date(a.period) - new Date(b.period)
+        );
+
+        const x = rows.map(row => row.period);
+        const demand = rows.map(row => number(row.demand));
+        const capacity = rows.map(row => {
+            const value = Number(row.capacity);
+            return Number.isFinite(value) ? value : null;
+        });
+
+        const custom = rows.map(row => [
+            number(row.capacity),
+            number(row.served),
+            number(row.remaining),
+            number(row.utilization),
+            String(row.status ?? "—")
+        ]);
+
+        const traceDemand = {
+            x,
+            y: demand,
+            type: "scatter",
+            mode: "lines+markers",
+            name: "Forecast Demand",
+            customdata: custom,
+            line: {
+                width: 2
+            },
+            marker: {
+                size: currentLevel === "Hourly" ? 4 : 6
+            },
+            hovertemplate:
+                "<b>%{x}</b><br>" +
+                "Forecast demand: %{y:.0f}<br>" +
+                "Capacity: %{customdata[0]:.0f}<br>" +
+                "Patients served: %{customdata[1]:.0f}<br>" +
+                "Patients remaining: %{customdata[2]:.0f}<br>" +
+                "Utilization: %{customdata[3]:.1f}%<br>" +
+                "Status: %{customdata[4]}<extra></extra>"
+        };
+
+        const traceCapacity = {
+            x,
+            y: capacity,
+            type: "scatter",
+            mode: "lines+markers",
+            name: "Capacity",
+            customdata: custom,
+            line: {
+                width: 2,
+                dash: "solid"
+            },
+            marker: {
+                size: currentLevel === "Hourly" ? 3 : 5
+            },
+            hovertemplate:
+                "<b>%{x}</b><br>" +
+                "Capacity: %{y:.0f}<br>" +
+                "Forecast demand: %{customdata[0]:.0f}<br>" +
+                "Patients served: %{customdata[1]:.0f}<br>" +
+                "Patients remaining: %{customdata[2]:.0f}<br>" +
+                "Utilization: %{customdata[3]:.1f}%<br>" +
+                "Status: %{customdata[4]}<extra></extra>"
+        };
+
+        let tickFormat = "%b %d";
+        if (currentLevel === "Hourly") {
+            tickFormat = "%b %d %H:%M";
+        }
+
+        const layout = {
+            autosize: true,
+            height: 350,
+            margin: {
+                l: 58,
+                r: 20,
+                t: 20,
+                b: currentLevel === "Hourly" ? 78 : 48
+            },
+            paper_bgcolor: "rgba(0,0,0,0)",
+            plot_bgcolor: "rgba(0,0,0,0)",
+            font: {
+                family: "Inter, sans-serif",
+                size: 10,
+                color: "#526161"
+            },
+            hovermode: "x unified",
+            hoverlabel: {
+                font: {
+                    family: "Inter, sans-serif",
+                    size: 11
+                }
+            },
+            xaxis: {
+                title: {
+                    text: "Period",
+                    font: { size: 10 }
+                },
+                type: "date",
+                tickformat: tickFormat,
+                gridcolor: "#E5ECEB",
+                zeroline: false,
+                automargin: true,
+                rangeslider: {
+                    visible: currentLevel === "Hourly"
+                }
+            },
+            yaxis: {
+                title: {
+                    text:
+                        currentLevel === "Daily"
+                            ? "Patients per day"
+                            : currentLevel === "Weekly"
+                                ? "Patients per week"
+                                : "Patients per hour",
+                    font: { size: 10 }
+                },
+                gridcolor: "#E5ECEB",
+                zeroline: false,
+                rangemode: "tozero",
+                automargin: true
+            },
+            legend: {
+                orientation: "h",
+                x: 0.5,
+                xanchor: "center",
+                y: 1.08,
+                yanchor: "bottom"
+            }
+        };
+
+        const config = {
+            responsive: true,
+            displaylogo: false,
+            scrollZoom: true,
+            displayModeBar: true,
+            modeBarButtonsToRemove: [
+                "lasso2d",
+                "select2d"
+            ]
+        };
+
+        Plotly.react(
+            chartElement,
+            [traceDemand, traceCapacity],
+            layout,
+            config
+        );
+
+        chart = chartElement;
+    }
+
+
+    /* ======================================================
+       SIMULATION TABLE
+    ====================================================== */
+
+    function displaySimulationTable(data) {
+
+        const tbody =
+            document.getElementById(
+                "simulationTableBody"
+            );
+
+
+        tbody.innerHTML = "";
+
+
+        data.forEach(row => {
+
+            const tr =
+                document.createElement("tr");
+
+
+            const wait =
+                row.averageWait !== null
+                    ? row.averageWait.toFixed(1)
+                    : "N/A";
+
+
+            tr.innerHTML = `
+
+                <td>
+                    ${formatPeriodFromDate(row.period)}
+                </td>
+
+                <td>
+                    ${row.demand.toFixed(1)}
+                </td>
+
+                <td>
+                    ${row.capacity.toFixed(1)}
+                </td>
+
+                <td>
+                    ${row.served.toFixed(0)}
+                </td>
+
+                <td>
+                    ${row.remaining.toFixed(0)}
+                </td>
+
+                <td>
+                    ${wait}
+                </td>
+
+                <td>
+                    ${row.utilization.toFixed(1)}
+                </td>
+
+                <td>
+                    ${statusHTML(row.status)}
+                </td>
+
+            `;
+
+
+            tbody.appendChild(tr);
+
+        });
+
+    }
+
+
+    /* ======================================================
+       PERIOD FORMATTER FOR TABLE
+    ====================================================== */
+
+    function formatPeriodFromDate(date) {
+
+        if (
+            currentLevel === "Hourly"
+        ) {
+
+            return date.toLocaleString(
+                "en-KE",
+                {
+                    year: "numeric",
+                    month: "short",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false
+                }
+            );
+
+        }
+
+
+        return date.toLocaleDateString(
+            "en-KE",
+            {
+                year: "numeric",
+                month: "short",
+                day: "2-digit"
+            }
+        );
+
+    }
+
+
+    /* ======================================================
+       DEPARTMENT OVERVIEW
+    ====================================================== */
+
+    function displayDepartmentOverview() {
+
+        const tbody =
+            document.getElementById(
+                "departmentTableBody"
+            );
+
+
+        tbody.innerHTML = "";
+
+
+        const grouped = new Map();
+
+
+        currentSimulation.forEach(row => {
+
+            const department =
+                getDepartment(row);
+
+
+            if (!department) {
+                return;
+            }
+
+
+            const period =
+                getPeriod(row);
+
+
+            if (
+                !grouped.has(department) ||
+                period >
+                grouped.get(department).period
+            ) {
+
+                grouped.set(
+                    department,
+                    {
+
+                        ...row,
+
+                        period,
+
+                        demand:
+                            getDemand(row),
+
+                        capacity:
+                            getCapacity(row),
+
+                        served:
+                            getPatientsServed(row),
+
+                        remaining:
+                            getPatientsRemaining(row),
+
+                        utilization:
+                            getUtilization(row),
+
+                        status:
+                            getStatus(row)
+
+                    }
+                );
+
+            }
+
+        });
+
+
+        const departments =
+            [...grouped.values()]
+                .sort(
+                    (a, b) =>
+                        b.utilization -
+                        a.utilization
+                );
+
+
+        departments.forEach(row => {
+
+            const tr =
+                document.createElement("tr");
+
+
+            tr.innerHTML = `
+
+                <td>
+                    ${getDepartment(row)}
+                </td>
+
+                <td>
+                    ${row.demand.toFixed(1)}
+                </td>
+
+                <td>
+                    ${row.capacity.toFixed(1)}
+                </td>
+
+                <td>
+                    ${row.served.toFixed(0)}
+                </td>
+
+                <td>
+                    ${row.remaining.toFixed(0)}
+                </td>
+
+                <td>
+                    ${row.utilization.toFixed(1)}
+                </td>
+
+                <td>
+                    ${statusHTML(row.status)}
+                </td>
+
+            `;
+
+
+            tbody.appendChild(tr);
+
+        });
+
+    }
+
+
+    /* ======================================================
+       STAFFING SCENARIO
+    ====================================================== */
+
+    async function runStaffingScenario() {
+
+        const staff = Number(
+            document.getElementById("scenarioStaff").value
+        );
+
+        const rooms = Number(
+            document.getElementById("scenarioRooms").value
+        );
+
+        if (!Number.isFinite(staff) || staff < 1) {
+            showMessage("Staff availability must be at least 1.", true);
+            return;
+        }
+
+        if (!Number.isFinite(rooms) || rooms < 1) {
+            showMessage("Room availability must be at least 1.", true);
+            return;
+        }
+
+        showMessage("Running staffing scenario...");
+
+        try {
+
+            // Department scenarios use the FastAPI scenario engine so
+            // the browser and backend use the same capacity logic.
+            if (currentView === "Department") {
+
+                const params = new URLSearchParams({
+                    level: currentLevel.toLowerCase(),
+                    department: currentDepartment,
+                    staff: String(staff),
+                    rooms: String(rooms)
+                });
+
+                const scenarioResponse = await fetchJSON(
+                    `/scenario/staff?${params.toString()}`
+                );
+
+                currentScenario = normalizeRows(scenarioResponse);
+
+                if (!currentScenario.length) {
+                    throw new Error("Scenario API returned no rows.");
+                }
+
+                updateDashboard();
+                showMessage("Staffing scenario completed.");
+                return;
+            }
+
+            // Hospital-wide scenario: scale the hospital-wide baseline
+            // capacity because the backend scenario endpoint is
+            // department-specific.
+            const baselineData = getHospitalData();
+
+            if (!baselineData.length) {
+                throw new Error("No hospital-wide data is available.");
+            }
+
+            const resourceFactor = Math.min(
+                staff / 6,
+                rooms / 6
+            );
+
+            const scenarioData = baselineData.map(row => {
+                const scenarioCapacity = row.capacity * resourceFactor;
+                const scenarioServed = Math.min(row.demand, scenarioCapacity);
+                const scenarioRemaining = Math.max(
+                    0,
+                    row.demand - scenarioServed
+                );
+                const scenarioUtilization = scenarioCapacity > 0
+                    ? (row.demand / scenarioCapacity) * 100
+                    : (row.demand > 0 ? 100 : 0);
+
+                let scenarioStatus = "Low";
+                if (scenarioCapacity <= 0) {
+                    scenarioStatus = row.demand > 0 ? "Critical" : "Closed";
+                } else if (scenarioRemaining > 0 || scenarioUtilization > 100) {
+                    scenarioStatus = "Overloaded";
+                } else if (scenarioUtilization >= 85) {
+                    scenarioStatus = "High";
+                } else if (scenarioUtilization >= 70) {
+                    scenarioStatus = "Moderate";
+                }
+
+                return {
+                    ...row,
+                    capacity: scenarioCapacity,
+                    served: scenarioServed,
+                    remaining: scenarioRemaining,
+                    utilization: scenarioUtilization,
+                    status: scenarioStatus
+                };
+            });
+
+            const latest = scenarioData[scenarioData.length - 1];
+
+            document.getElementById("scenarioText").innerHTML = `
+                <strong>Scenario:</strong> ${staff} staff, ${rooms} rooms
+                &nbsp;|&nbsp;
+                <strong>Baseline capacity:</strong> ${baselineData[baselineData.length - 1].capacity.toFixed(0)}
+                &nbsp;|&nbsp;
+                <strong>Scenario capacity:</strong> ${latest.capacity.toFixed(0)}
+                &nbsp;|&nbsp;
+                <strong>Utilization:</strong> ${latest.utilization.toFixed(1)}%
+                &nbsp;|&nbsp;
+                <strong>Patients remaining:</strong> ${latest.remaining.toFixed(0)}
+                &nbsp;|&nbsp;
+                <strong>Status:</strong> ${statusHTML(latest.status)}
+            `;
+
+            updateDashboardWithData(scenarioData);
+            showMessage("Hospital-wide staffing scenario completed.");
+
+        } catch (error) {
+            console.error(error);
+            showMessage(error.message || "Staffing scenario failed.", true);
+        }
+
+    }
+
+
+    function updateDashboardWithData(data) {
+
+        if (!data || !data.length) {
+            return;
+        }
+
+        const latest = data[data.length - 1];
+
+        document.getElementById("forecastDemand").textContent =
+            `${number(latest.demand).toFixed(0)} patients`;
+
+        document.getElementById("capacity").textContent =
+            latest.status === "Closed"
+                ? "—"
+                : `${number(latest.capacity).toFixed(0)} patients`;
+
+        document.getElementById("utilization").textContent =
+            latest.status === "Closed"
+                ? "—"
+                : `${number(latest.utilization).toFixed(1)}%`;
+
+        document.getElementById("congestion").innerHTML =
+            statusHTML(latest.status);
+
+        document.getElementById("patientsServed").textContent =
+            latest.status === "Closed" ? "—" : number(latest.served).toFixed(0);
+
+        document.getElementById("patientsRemaining").textContent =
+            number(latest.remaining).toFixed(0);
+
+        document.getElementById("averageWait").textContent =
+            latest.averageWait !== null && latest.averageWait !== undefined
+                ? `${number(latest.averageWait).toFixed(1)} min`
+                : "N/A";
+
+        document.getElementById("maximumWait").textContent =
+            latest.maximumWait !== null && latest.maximumWait !== undefined
+                ? `${number(latest.maximumWait).toFixed(0)} min`
+                : "N/A";
+
+        updateChart(data);
+        displaySimulationTable(data);
+    }
+
+
+    /* ======================================================
+       MESSAGE
+    ====================================================== */
+
+    function showMessage(
+        message,
+        error = false
+    ) {
+
+        const element =
+            document.getElementById(
+                "statusMessage"
+            );
+
+
+        element.textContent =
+            message;
+
+
+        element.style.color =
+            error
+                ? "#B42318"
+                : "#4D9296";
+
+    }
+
+
+    window.addEventListener("resize", function () {
+        if (chart && typeof Plotly !== "undefined") {
+            Plotly.Plots.resize(chart);
+        }
+    });
+
+
+    /* ======================================================
+       INITIALIZATION
+    ====================================================== */
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        async function () {
+
+            try {
+
+                await loadData();
+
+            } catch (error) {
+
+                showMessage(
+                    "Unable to load dashboard data.",
+                    true
+                );
+
+                console.error(error);
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+</html>
