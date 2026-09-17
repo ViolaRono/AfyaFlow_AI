@@ -1,3 +1,5 @@
 Opd_data.xlsx
 .ipynb_checkpoints/
 _pycache_/
+*.pyc
+.venv/
