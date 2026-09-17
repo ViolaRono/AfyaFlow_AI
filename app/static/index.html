@@ -1057,18 +1057,19 @@
 
     const API_BASE = (() => {
 
-        // If index.html is served by FastAPI on port 8000, use
-        // the same origin. If it is opened through another local
-        // dev server (or directly as a file), call the FastAPI
-        // backend explicitly.
-        if (
-            window.location.protocol !== "file:" &&
-            window.location.port === "8000"
-        ) {
-            return window.location.origin;
+        /*
+         * AfyaFlow is served by FastAPI in production.
+         * Use the same origin so deployed users call the API
+         * on the Render service rather than 127.0.0.1 on
+         * their own device.
+         *
+         * A file:// copy can still use the local FastAPI server.
+         */
+        if (window.location.protocol === "file:") {
+            return "http://127.0.0.1:8000";
         }
 
-        return "http://127.0.0.1:8000";
+        return window.location.origin;
 
     })();
 
@@ -1129,7 +1130,7 @@
         } catch (error) {
             throw new Error(
                 `Could not connect to AfyaFlow API at ${requestUrl}. ` +
-                `Make sure FastAPI is running on http://127.0.0.1:8000.`
+                `Check that the AfyaFlow service is running.`
             );
         }
 
