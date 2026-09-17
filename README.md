@@ -1,11 +1,12 @@
 # AfyaFlow
 ## Predicting outpatient demand at AIC Kijabe Hospital
 AfyaFlow predicts how many patients will show up at each hospital department, hour by hour, so that staff and rooms can be put where the patients will be.
+
 Moringa School, Capstone. Group 1, Queue Busters.
 
 ### Project Link
 
-- [Dataset - Google Drive](https://drive.google.com/drive/folders/143niKLK5dqg21RFiepCYGbVqfNiuOHP9?usp=sharing)
+[Dataset - Google Drive](https://drive.google.com/drive/folders/143niKLK5dqg21RFiepCYGbVqfNiuOHP9?usp=sharing)
 
 ### The problem
 Kijabe Hospital plans its outpatient departments around daily averages. But patients do not arrive in an even spread through the day. They come in a big wave in the morning.
@@ -68,7 +69,7 @@ The fairer way to look at it is department by department:
 | MCH | 1.08 | 0.80 | 26% |
 | Admission | 1.40 | 1.08 | 23% |
 
-The model earns its keep in the busy departments, not on the empty hours.
+The model earns its keep in the busy departments.
 
 #### What we recommend to the hospital
 1. Put more staff on weekday mornings, especially Mondays and the 8am to 9am peak.
@@ -92,8 +93,7 @@ AfyaFlow_AI/
 
 *Limitations*
 
-* We were not given waiting times, staffing levels or bed availability. So we work out congestion
-from how many people arrive, not from how long they actually waited.
+* The dataset has no given waiting times, staffing levels or bed availability. So we work out congestion from how many people arrive, not from how long they actually waited.
 * The data is a one-off export. For real use it would need to update automatically.
 * This is a planning tool. It does not make any clinical decisions about patients.
 
